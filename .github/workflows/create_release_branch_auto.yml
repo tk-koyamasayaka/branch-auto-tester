@@ -45,10 +45,10 @@ jobs:
           git branch -r
 
       - name: Create pull request
-        uses: repo-sync/pull-request@v2
+        uses: peter-evans/create-pull-request@v5
         with:
-          source_branch: release/${{ env.CURRENT_DATETIME }}_auto
-          destination_branch: ${{ env.DEST_BRANCH }}
-          pr_title: ${{ env.CURRENT_DATE }} 集約リリース
-          pr_body: このブランチは、GitHub Actionsのワークフローで ${{ env.CURRENT_DATETIME }} に自動生成されました。
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: release/${{ env.CURRENT_DATETIME }}_auto
+          base: ${{ env.DEST_BRANCH }}
+          title: ${{ env.CURRENT_DATE }} 集約リリース
+          body: このブランチは、GitHub Actionsのワークフローで ${{ env.CURRENT_DATETIME }} に自動生成されました。
+          token: ${{ secrets.GITHUB_TOKEN }}
