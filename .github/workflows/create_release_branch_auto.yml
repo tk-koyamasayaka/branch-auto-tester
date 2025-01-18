@@ -33,6 +33,11 @@ jobs:
           git switch -c release/${{ env.CURRENT_DATETIME }}_auto
           git push -u origin release/${{ env.CURRENT_DATETIME }}_auto
 
+      - name: Create an empty commit
+        run: |
+          git commit --allow-empty -m "feature: Empty commit for PR creation"
+          git push origin release/${{ env.CURRENT_DATETIME }}_auto
+
       - name: Create pull request
         uses: repo-sync/pull-request@v2
         with:
@@ -41,4 +46,3 @@ jobs:
           pr_title: ${{ env.CURRENT_DATE }} 集約リリース
           pr_body: このブランチは、GitHub Actionsのワークフローで ${{ env.CURRENT_DATETIME }} に自動生成されました。
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          force_create: true # 差分がなくてもPRを作成する
