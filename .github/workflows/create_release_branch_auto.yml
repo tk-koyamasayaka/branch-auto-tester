@@ -39,6 +39,11 @@ jobs:
           git commit --allow-empty -m "feature: Empty commit for PR creation"
           git push -u origin release/${{ env.CURRENT_DATETIME }}_auto
 
+      - name: Verify pushed branch
+        run: |
+          git fetch --all
+          git branch -r
+
       - name: Create pull request
         uses: repo-sync/pull-request@v2
         with:
