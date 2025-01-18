@@ -3,7 +3,8 @@ name: "Create PR"
 on:
   workflow_dispatch: # 手動でトリガーして動作を確認するため
   schedule:
-    - cron: '0 0 * * 1-4' # UTC時間で月曜から木曜の午前0時に実行
+    # - cron: '0 0 * * 1-4' # UTC時間で月曜から木曜の午前0時に実行
+    - cron: '0 23 * * *'
 
 
 env:
@@ -40,3 +41,4 @@ jobs:
           pr_title: ${{ env.CURRENT_DATE }} 集約リリース
           pr_body: このブランチは、GitHub Actionsのワークフローで ${{ env.CURRENT_DATETIME }} に自動生成されました。
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          force_create: true # 差分がなくてもPRを作成する
