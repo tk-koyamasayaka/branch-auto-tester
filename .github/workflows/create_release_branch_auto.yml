@@ -34,6 +34,8 @@ jobs:
           git push -u origin release/${{ env.CURRENT_DATETIME }}_auto
 
       - name: Create an empty commit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git commit --allow-empty -m "feature: Empty commit for PR creation"
           git push origin release/${{ env.CURRENT_DATETIME }}_auto
