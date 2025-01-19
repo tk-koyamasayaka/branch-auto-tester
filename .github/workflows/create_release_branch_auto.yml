@@ -39,6 +39,7 @@ jobs:
 
       - name: Create pull request using GitHub CLI
         run: |
+          gh auth login --with-token <<< "${{ secrets.PAT_TOKEN }}"
           gh pr create \
             --title "${{ env.CURRENT_DATE }} 集約リリース" \
             --body "このブランチは、GitHub Actionsのワークフローで ${{ env.CURRENT_DATETIME }} に自動生成されました。" \
