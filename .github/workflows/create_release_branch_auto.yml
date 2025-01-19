@@ -26,6 +26,10 @@ jobs:
           echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
           echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
+      - name: Generate release branch name
+        run: |
+          echo "RELEASE_BRANCH=release/${{ env.CURRENT_DATETIME }}_auto" >> $GITHUB_ENV
+
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
@@ -33,25 +37,16 @@ jobs:
 
       - name: Create and push a new branch
         run: |
-          git switch -c release/${{ env.CURRENT_DATETIME }}_auto
+          git switch -c ${{ env.RELEASE_BRANCH }}
           git commit --allow-empty -m "chore: Empty commit for PR creation"
-          git push origin release/${{ env.CURRENT_DATETIME }}_auto
+          git push origin ${{ env.RELEASE_BRANCH }}
 
       - name: Create pull request using GitHub CLI
         run: |
           gh pr create \
             --title "${{ env.CURRENT_DATE }} 集約リリース" \
-            --body "このブランチは、GitHub Actionsのワークフローで ${{ env.CURRENT_DATETIME }} に自動生成されました。" \
+            --body "このブランチは、GitHub Actionsのワークフローで自動生成されました。" \
             --base ${{ env.DEST_BRANCH }} \
-            --head release/${{ env.CURRENT_DATETIME }}_auto
+            --head ${{ env.RELEASE_BRANCH }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Create pull request
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     branch: release/${{ env.CURRENT_DATETIME }}_auto
-      #     base: ${{ env.DEST_BRANCH }}
-      #     title: ${{ env.CURRENT_DATE }} 集約リリース
-      #     body: このブランチは、GitHub Actionsのワークフローで ${{ env.CURRENT_DATETIME }} に自動生成されました。
-      #     token: ${{ secrets.GITHUB_TOKEN }}
