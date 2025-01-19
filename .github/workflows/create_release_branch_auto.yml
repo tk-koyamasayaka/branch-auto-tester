@@ -36,13 +36,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git switch -c release/${{ env.CURRENT_DATETIME }}_auto
-          echo "dummy_file_${{ env.CURRENT_DATETIME }}.txt" >> .gitignore
-          echo "Dummy content for PR creation" > dummy_file_${{ env.CURRENT_DATETIME }}.txt
-          git add .gitignore dummy_file_${{ env.CURRENT_DATETIME }}.txt
-          git commit -m "chore: Add dummy file for PR creation"
+          git tag pr-trigger-${{ env.CURRENT_DATETIME }}
           git push -u origin release/${{ env.CURRENT_DATETIME }}_auto
-
-      # リリースラベルが付いているPRを集約ブランチにマージする
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v5
