@@ -52,11 +52,11 @@ jobs:
 
       - name: Create pull request using GitHub CLI
         run: |
-          gh pr create \
+          PR_URL=$(gh pr create \
             --title "${{ env.CURRENT_DATE }} 集約リリース" \
             --body "このブランチは、GitHub Actionsのワークフローで自動生成されました。" \
             --base ${{ env.DEST_BRANCH }} \
-            --head ${{ env.RELEASE_BRANCH }}
+            --head ${{ env.RELEASE_BRANCH }})
           
           echo "PR_URL=$PR_URL" >> $GITHUB_ENV
         env:
