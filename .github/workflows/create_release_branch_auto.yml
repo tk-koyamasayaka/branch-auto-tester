@@ -37,9 +37,6 @@ jobs:
           git commit --allow-empty -m "chore: Empty commit for PR creation"
           git push origin release/${{ env.CURRENT_DATETIME }}_auto
 
-      - name: Check GitHub CLI authentication
-        run: gh auth status
-
       - name: Create pull request using GitHub CLI
         run: |
           gh pr create \
