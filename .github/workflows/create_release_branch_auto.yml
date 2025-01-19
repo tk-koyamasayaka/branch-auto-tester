@@ -25,6 +25,15 @@ jobs:
         run: |
           echo "CURRENT_DATETIME=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
           echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          
+          # 月初1日or月末の最終日の場合はブランチ作成を行わない
+          CURRENT_DAY=$(date +'%d')
+          LAST_DAY=$(date -d "$(date +%Y-%m-01) +1 month -1 day" +'%d')
+
+          if [ "$CURRENT_DAY" -eq 1 ] || [ "$CURRENT_DAY" -eq "$LAST_DAY" ]; then
+            echo "月初1日or月末の最終日なのでリリースブランチ作成をスキップします"
+            exit 0
+          fi
 
       - name: Generate release branch name
         run: |
