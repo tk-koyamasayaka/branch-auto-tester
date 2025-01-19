@@ -1,0 +1,36 @@
+name: Test Workflow for First and Last Day
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_date:
+        description: "YYYY-MM-DD format date to simulate"
+        required: true
+        default: "2025-01-01"
+
+jobs:
+  test-skip-logic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate date and determine if workflow should skip
+        env:
+          TZ: 'Asia/Tokyo'
+        run: |
+          # シミュレーションする日付を設定
+          TEST_DATE="${{ github.event.inputs.test_date }}"
+          echo "Simulating date: $TEST_DATE"
+
+          # 日付の情報を解析
+          CURRENT_DAY=$(date -d "$TEST_DATE" +'%d')
+          LAST_DAY=$(date -d "$(date -d "$TEST_DATE" +%Y-%m-01) +1 month -1 day" +'%d')
+
+          echo "Current Day: $CURRENT_DAY"
+          echo "Last Day of the Month: $LAST_DAY"
+
+          # 月初または月末の場合は終了
+          if [ "$CURRENT_DAY" -eq 1 ] || [ "$CURRENT_DAY" -eq "$LAST_DAY" ]; then
+            echo "Simulated date is the first or last day of the month. Skipping workflow."
+            exit 0
+          fi
+
+          echo "Simulated date is neither the first nor the last day of the month. Proceeding with workflow."
