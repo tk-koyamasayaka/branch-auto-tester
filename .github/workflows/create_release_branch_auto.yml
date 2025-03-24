@@ -46,9 +46,9 @@ jobs:
 
       - name: Create and push a new branch
         run: >
-          git switch 
+          git switch
           -c ${{ env.RELEASE_BRANCH }}
-          git commit 
+          git commit
           --allow-empty -m "chore: Empty commit for PR creation"
           git push origin ${{ env.RELEASE_BRANCH }}
 
