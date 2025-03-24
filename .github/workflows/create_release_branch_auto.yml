@@ -45,9 +45,11 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Create and push a new branch
-        run: |
-          git switch -c ${{ env.RELEASE_BRANCH }}
-          git commit --allow-empty -m "chore: Empty commit for PR creation"
+        run: >
+          git switch 
+          -c ${{ env.RELEASE_BRANCH }}
+          git commit 
+          --allow-empty -m "chore: Empty commit for PR creation"
           git push origin ${{ env.RELEASE_BRANCH }}
 
       - name: Create pull request using GitHub CLI
